@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using VacationRental.Api.Models;
+using System.Threading.Tasks;
+using VacationRental.Data.Models;
+using VacationRental.Services;
+using VacationRental.Services.Models;
 
 namespace VacationRental.Api.Controllers
 {
@@ -9,64 +12,47 @@ namespace VacationRental.Api.Controllers
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly IDictionary<int, RentalViewModel> _rentals;
-        private readonly IDictionary<int, BookingViewModel> _bookings;
+        private readonly IRentalService _rentalService;
+        private readonly IBookingService _bookingService;
+        private readonly IMapper _mapper;
+        private readonly IValidator<BookingBindingModel> _validator;
 
         public BookingsController(
-            IDictionary<int, RentalViewModel> rentals,
-            IDictionary<int, BookingViewModel> bookings)
+            IRentalService rentalService,
+            IBookingService bookingService,
+            IMapper mapper,
+            IValidator<BookingBindingModel> validator)
         {
-            _rentals = rentals;
-            _bookings = bookings;
+            _rentalService = rentalService;
+            _bookingService = bookingService;
+            _mapper = mapper;
+            _validator = validator;
         }
 
-        [HttpGet]
-        [Route("{bookingId:int}")]
-        public BookingViewModel Get(int bookingId)
+        [HttpGet("{bookingId:int}")]
+        public async Task<ActionResult<BookingViewModel>> GetBookingAsync(int bookingId)
         {
-            if (!_bookings.ContainsKey(bookingId))
-                throw new ApplicationException("Booking not found");
+            var booking = await _bookingService.GetBookingAsync(bookingId);
 
-            return _bookings[bookingId];
+            if (booking == default)
+            {
+                return BadRequest("Booking not found");
+            }
+
+            return booking;
         }
 
         [HttpPost]
-        public ResourceIdViewModel Post(BookingBindingModel model)
+        public async Task<ActionResult<ResourceIdViewModel>> CreateBookingAsync([FromBody]BookingBindingModel model)
         {
-            if (model.Nights <= 0)
-                throw new ApplicationException("Nigts must be positive");
-            if (!_rentals.ContainsKey(model.RentalId))
-                throw new ApplicationException("Rental not found");
-
-            for (var i = 0; i < model.Nights; i++)
+            var validationResult = _validator.Validate(model);
+            if (!validationResult.IsValid)
             {
-                var count = 0;
-                foreach (var booking in _bookings.Values)
-                {
-                    if (booking.RentalId == model.RentalId
-                        && (booking.Start <= model.Start.Date && booking.Start.AddDays(booking.Nights) > model.Start.Date)
-                        || (booking.Start < model.Start.AddDays(model.Nights) && booking.Start.AddDays(booking.Nights) >= model.Start.AddDays(model.Nights))
-                        || (booking.Start > model.Start && booking.Start.AddDays(booking.Nights) < model.Start.AddDays(model.Nights)))
-                    {
-                        count++;
-                    }
-                }
-                if (count >= _rentals[model.RentalId].Units)
-                    throw new ApplicationException("Not available");
+                return BadRequest(validationResult.ToString());
             }
 
-
-            var key = new ResourceIdViewModel { Id = _bookings.Keys.Count + 1 };
-
-            _bookings.Add(key.Id, new BookingViewModel
-            {
-                Id = key.Id,
-                Nights = model.Nights,
-                RentalId = model.RentalId,
-                Start = model.Start.Date
-            });
-
-            return key;
+            var bookingId = await _bookingService.CreateBookingAsync(_mapper.Map<BookingViewModel>(model));
+            return new CreatedResult(nameof(GetBookingAsync), bookingId);
         }
     }
 }

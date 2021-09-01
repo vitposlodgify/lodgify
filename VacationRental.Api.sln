@@ -7,6 +7,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationRental.Api", "Vacat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationRental.Api.Tests", "VacationRental.Api.Tests\VacationRental.Api.Tests.csproj", "{57FE6E13-7144-459F-BCA8-431087D3DAEE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationRental.Services", "VacationRental.Services\VacationRental.Services.csproj", "{9011BBC4-2D71-43EA-8E6B-E5AF9C62F4E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationRental.Data", "VacationRental.Data\VacationRental.Data.csproj", "{5A62E835-3796-4832-9A4B-9A6A873708A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Data", "01.Data", "{8D0E7398-9C21-4E32-AB01-98BF9D686640}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Business", "02.Business", "{541B6240-33F0-43E8-A627-07A556FA6BD9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.API", "03.API", "{D2A390B9-7104-4DB2-9595-83CA0548AA9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Test", "04.Test", "{EF8D819C-5FA5-4E61-B3A3-51DA9F41B943}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +33,23 @@ Global
 		{57FE6E13-7144-459F-BCA8-431087D3DAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57FE6E13-7144-459F-BCA8-431087D3DAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57FE6E13-7144-459F-BCA8-431087D3DAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9011BBC4-2D71-43EA-8E6B-E5AF9C62F4E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9011BBC4-2D71-43EA-8E6B-E5AF9C62F4E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9011BBC4-2D71-43EA-8E6B-E5AF9C62F4E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9011BBC4-2D71-43EA-8E6B-E5AF9C62F4E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A62E835-3796-4832-9A4B-9A6A873708A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A62E835-3796-4832-9A4B-9A6A873708A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A62E835-3796-4832-9A4B-9A6A873708A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A62E835-3796-4832-9A4B-9A6A873708A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{478C6CBF-6F84-4604-8E31-DEDFDFE10DBC} = {D2A390B9-7104-4DB2-9595-83CA0548AA9A}
+		{57FE6E13-7144-459F-BCA8-431087D3DAEE} = {EF8D819C-5FA5-4E61-B3A3-51DA9F41B943}
+		{9011BBC4-2D71-43EA-8E6B-E5AF9C62F4E7} = {541B6240-33F0-43E8-A627-07A556FA6BD9}
+		{5A62E835-3796-4832-9A4B-9A6A873708A1} = {8D0E7398-9C21-4E32-AB01-98BF9D686640}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A5319C5-4F21-41BF-B8A7-BC45868FEC89}
